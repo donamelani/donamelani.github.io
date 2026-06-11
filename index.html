@@ -13,18 +13,47 @@
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
+
 :root{
-  --bg:#0a0a0a;--bg2:#111;--bg3:#161616;
-  --text:#f0ede8;--text2:#888;--text3:#444;
-  --accent:#e8ff47;
-  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);
-  --radius:10px;
+--bg:#0a0a0a;--bg2:#111;--bg3:#161616;
+--text:#f0ede8;--text2:#888;--text3:#444;
+--accent:#e8ff47;
+--border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.13);
+--radius:10px;
+--grad-x:30%;--grad-y:20%;--grad-opacity:0;
 }
+
 html{scroll-behavior:smooth}
-body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+
+body{
+  font-family:'Inter',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+  position:relative;
+}
+
+/* ambient bg gradient that shifts on scroll */
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  background:radial-gradient(ellipse 60% 50% at var(--grad-x) var(--grad-y),rgba(232,255,71,0.06) 0%,transparent 70%);
+  pointer-events:none;
+  z-index:0;
+  opacity:var(--grad-opacity);
+  transition:opacity 0.3s;
+}
+
+/* content above gradient */
+nav,.hero,.marquee-wrap,.section,.contact-section,footer{position:relative;z-index:1}
+
 a{color:inherit;text-decoration:none}
 ::selection{background:var(--accent);color:#000}
+
 #dot{width:8px;height:8px;background:var(--accent);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transition:transform 0.15s,opacity 0.15s;transform:translate(-50%,-50%)}
+
 nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 2.5rem;height:60px;border-bottom:0.5px solid var(--border)}
 nav::before{content:"";position:absolute;inset:0;background:rgba(10,10,10,0.85);backdrop-filter:blur(12px);z-index:-1}
 .nav-logo{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:0.08em}
@@ -34,15 +63,19 @@ nav::before{content:"";position:absolute;inset:0;background:rgba(10,10,10,0.85);
 .nav-links a:hover{color:var(--text)}
 .nav-cta{font-size:12px;letter-spacing:0.06em;text-transform:uppercase;font-weight:500;padding:8px 20px;border-radius:40px;border:1px solid var(--border2);transition:all 0.2s}
 .nav-cta:hover{background:var(--accent);color:#000;border-color:var(--accent)}
-.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 2.5rem 4rem;position:relative;overflow:hidden}
+
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 2.5rem 4rem;overflow:hidden}
 .hero-top{position:absolute;top:80px;left:2.5rem;right:2.5rem;display:flex;justify-content:space-between;align-items:flex-start}
 .avail-badge{display:inline-flex;align-items:center;gap:8px;font-size:12px;letter-spacing:0.05em;text-transform:uppercase;color:var(--text2);border:0.5px solid var(--border2);padding:8px 16px;border-radius:40px}
 .avail-dot{width:7px;height:7px;border-radius:50%;background:var(--accent);animation:blink 2s infinite;flex-shrink:0}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0.2}}
 .hero-year{font-size:12px;color:var(--text3);letter-spacing:0.05em;text-transform:uppercase}
-.hero-name{font-family:'Bebas Neue',sans-serif;font-size:clamp(80px,14vw,180px);line-height:0.9;letter-spacing:-0.01em;margin-bottom:0.15em}
-.hero-name .line2{color:transparent;-webkit-text-stroke:1px rgba(240,237,232,0.2)}
+
+.hero-name{font-family:'Bebas Neue',sans-serif;font-size:clamp(80px,14vw,180px);line-height:0.9;letter-spacing:-0.01em;margin-bottom:0.15em;will-change:transform}
+.hero-name .line1,.hero-name .line3{display:block}
+.hero-name .line2{display:block;color:transparent;-webkit-text-stroke:1px rgba(240,237,232,0.2)}
 .hero-name .ac{color:var(--accent)}
+
 .hero-bottom{display:flex;justify-content:space-between;align-items:flex-end;gap:2rem;flex-wrap:wrap;padding-top:2.5rem;border-top:0.5px solid var(--border)}
 .hero-desc{font-size:14px;line-height:1.8;color:var(--text2);max-width:340px}
 .hero-stats{display:flex;gap:2.5rem}
@@ -54,16 +87,19 @@ nav::before{content:"";position:absolute;inset:0;background:rgba(10,10,10,0.85);
 .btn-icon{width:44px;height:44px;border-radius:50%;border:0.5px solid var(--border2);display:inline-flex;align-items:center;justify-content:center;color:var(--text2);transition:all 0.2s}
 .btn-icon:hover{border-color:var(--text2);color:var(--text)}
 .btn-icon svg,.btn-main svg{width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
 .marquee-wrap{border-top:0.5px solid var(--border);border-bottom:0.5px solid var(--border);padding:14px 0;overflow:hidden;white-space:nowrap;background:var(--bg2)}
 .marquee-track{display:inline-flex;animation:marquee 30s linear infinite}
 .marquee-item{font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:0.12em;color:var(--text3);padding:0 2rem;text-transform:uppercase}
 .marquee-item span{color:var(--accent)}
 @keyframes marquee{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
 .section{padding:100px 2.5rem;border-bottom:0.5px solid var(--border)}
 .sec-header{display:flex;align-items:baseline;gap:1.5rem;margin-bottom:4rem}
 .sec-num{font-family:'Bebas Neue',sans-serif;font-size:13px;color:var(--text3);letter-spacing:0.1em}
 .sec-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(36px,5vw,56px);letter-spacing:0.02em;line-height:1}
 .sec-title em{font-style:normal;color:var(--accent)}
+
 .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start}
 .about-text{font-size:15px;line-height:1.85;color:var(--text2)}
 .about-text p+p{margin-top:1rem}
@@ -71,12 +107,14 @@ nav::before{content:"";position:absolute;inset:0;background:rgba(10,10,10,0.85);
 .about-fact{padding:1.25rem 1.5rem;border:0.5px solid var(--border);border-radius:var(--radius);background:var(--bg2)}
 .about-fact-label{font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--text3);margin-bottom:5px}
 .about-fact-val{font-size:13px;color:var(--text)}
+
 .skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;border:0.5px solid var(--border)}
 .skill-box{padding:1.75rem 1.5rem;background:var(--bg);transition:background 0.2s}
 .skill-box:hover{background:var(--bg2)}
 .skill-box-name{font-size:11px;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);margin-bottom:14px;font-weight:500}
 .tags{display:flex;flex-wrap:wrap;gap:6px}
 .tag{font-size:12px;padding:4px 10px;border-radius:20px;border:0.5px solid var(--border2);color:var(--text2)}
+
 .proj-list{display:flex;flex-direction:column}
 .proj-item{display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:start;padding:2.5rem 0;border-bottom:0.5px solid var(--border)}
 .proj-item:first-child{border-top:0.5px solid var(--border)}
@@ -91,6 +129,7 @@ nav::before{content:"";position:absolute;inset:0;background:rgba(10,10,10,0.85);
 .proj-arrow svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .proj-feat{font-size:11px;letter-spacing:0.07em;text-transform:uppercase;color:var(--accent);background:rgba(232,255,71,0.07);padding:5px 12px;border-radius:20px;border:0.5px solid rgba(232,255,71,0.18)}
 .score-pill{font-size:11px;letter-spacing:0.05em;text-transform:uppercase;color:#7ecb6f;background:rgba(126,203,111,0.07);padding:5px 12px;border-radius:20px;border:0.5px solid rgba(126,203,111,0.18)}
+
 .exp-list{display:flex;flex-direction:column}
 .exp-item{display:grid;grid-template-columns:200px 1fr;gap:3rem;padding:2.5rem 0;border-bottom:0.5px solid var(--border)}
 .exp-item:first-child{border-top:0.5px solid var(--border)}
@@ -100,21 +139,22 @@ nav::before{content:"";position:absolute;inset:0;background:rgba(10,10,10,0.85);
 .exp-pts{list-style:none;display:flex;flex-direction:column;gap:7px}
 .exp-pts li{font-size:13px;color:var(--text2);padding-left:16px;position:relative;line-height:1.6}
 .exp-pts li::before{content:"→";position:absolute;left:0;color:var(--text3);font-size:10px;top:3px}
+
 .cert-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
 .cert-card{padding:1.5rem;border:0.5px solid var(--border);border-radius:var(--radius);background:var(--bg2);transition:border-color 0.2s}
 .cert-card:hover{border-color:var(--border2)}
 .cert-badge{font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--accent);margin-bottom:10px;font-weight:500}
 .cert-name{font-size:14px;font-weight:500;line-height:1.4;margin-bottom:4px}
 .cert-issuer{font-size:12px;color:var(--text3)}
+
 .awards-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .award-card{padding:2rem;border:0.5px solid var(--border);border-radius:var(--radius);background:var(--bg2);position:relative;overflow:hidden}
 .award-card::before{content:"";position:absolute;top:0;left:0;width:3px;height:100%;background:var(--accent)}
-.award-card:hover {
-  background-color: rgba(255, 255, 255, 0.08);
-}
+.award-card:hover{background-color:rgba(255,255,255,0.08)}
 .award-bg{font-family:'Bebas Neue',sans-serif;font-size:60px;color:rgba(232,255,71,0.04);position:absolute;top:0.5rem;right:1rem;line-height:1;pointer-events:none}
 .award-name{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:0.04em;margin-bottom:8px}
 .award-desc{font-size:13px;color:var(--text2);line-height:1.6}
+
 .contact-section{padding:100px 2.5rem 80px}
 .contact-big{font-family:'Bebas Neue',sans-serif;font-size:clamp(50px,10vw,120px);line-height:0.88;letter-spacing:-0.01em;margin-bottom:3.5rem}
 .contact-big em{font-style:normal;color:transparent;-webkit-text-stroke:1px rgba(240,237,232,0.18)}
@@ -125,26 +165,34 @@ nav::before{content:"";position:absolute;inset:0;background:rgba(10,10,10,0.85);
 .btn-outline{display:inline-flex;align-items:center;gap:7px;border:0.5px solid var(--border2);color:var(--text2);font-size:13px;padding:11px 22px;border-radius:40px;transition:all 0.2s}
 .btn-outline:hover{border-color:var(--text2);color:var(--text)}
 .btn-outline svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
 footer{padding:1.5rem 2.5rem;display:flex;justify-content:space-between;align-items:center;border-top:0.5px solid var(--border)}
 .foot-copy{font-size:12px;color:var(--text3);letter-spacing:0.04em;text-transform:uppercase}
 .foot-logo{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:0.08em}
 .foot-logo span{color:var(--accent)}
+
 @media(max-width:768px){
-  nav{padding:0 1.25rem}.nav-links{display:none}
-  .hero{padding:0 1.25rem 3rem}.hero-top{left:1.25rem;right:1.25rem}
-  .hero-stats{gap:1.5rem}
-  .section{padding:60px 1.25rem}
-  .about-grid{grid-template-columns:1fr}
-  .exp-item{grid-template-columns:1fr;gap:0.75rem}
-  .awards-grid{grid-template-columns:1fr}
-  .contact-section{padding:60px 1.25rem 60px}
-  .proj-item{grid-template-columns:1fr}.proj-right{flex-direction:row;align-items:center}
-  footer{padding:1.25rem}
+nav{padding:0 1.25rem}.nav-links{display:none}
+.hero{padding:0 1.25rem 3rem}.hero-top{left:1.25rem;right:1.25rem}
+.hero-stats{gap:1.5rem}
+.section{padding:60px 1.25rem}
+.about-grid{grid-template-columns:1fr}
+.exp-item{grid-template-columns:1fr;gap:0.75rem}
+.awards-grid{grid-template-columns:1fr}
+.contact-section{padding:60px 1.25rem 60px}
+.proj-item{grid-template-columns:1fr}.proj-right{flex-direction:row;align-items:center}
+footer{padding:1.25rem}
 }
-@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+@media(prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+  .hero-name .line1,.hero-name .line2,.hero-name .line3,
+  .hero-desc,.hero-stats,.hero-actions{opacity:1!important;transform:none!important}
+}
 </style>
 </head>
 <body>
+
 <div id="dot"></div>
 
 <nav>
@@ -159,22 +207,19 @@ footer{padding:1.5rem 2.5rem;display:flex;justify-content:space-between;align-it
 </nav>
 
 <section class="hero" id="top">
-  <div class="hero-top">
-    <!-- <div class="avail-badge"><span class="avail-dot"></span>Available for roles</div> -->
-    <!-- <div class="hero-year">Kerala, India &middot; 2025</div> -->
-  </div>
+  <div class="hero-top"></div>
   <div class="hero-name">
-    <div>DON<span class="ac">A</span></div>
+    <div class="line1">DON<span class="ac">A</span></div>
     <div class="line2">MELANI</div>
-    <div>THOMSON</div>
+    <div class="line3">THOMSON</div>
   </div>
   <div class="hero-bottom">
     <p class="hero-desc">Frontend Engineer crafting fast, beautiful web experiences with React.js, Gatsby &amp; modern stacks. 4+ years turning designs into production-grade code.</p>
     <div class="hero-stats">
-      <div><span class="h-stat-num">4+</span><div class="h-stat-lbl">Years exp</div></div>
-      <div><span class="h-stat-num">95+</span><div class="h-stat-lbl">Lighthouse</div></div>
-      <div><span class="h-stat-num">60%</span><div class="h-stat-lbl">Deploy saved</div></div>
-      <div><span class="h-stat-num">3&times;</span><div class="h-stat-lbl">Azure cert</div></div>
+      <div><span class="h-stat-num" data-target="4" data-suffix="+">4+</span><div class="h-stat-lbl">Years exp</div></div>
+      <div><span class="h-stat-num" data-target="95" data-suffix="+">95+</span><div class="h-stat-lbl">Lighthouse</div></div>
+      <div><span class="h-stat-num" data-target="60" data-suffix="%">60%</span><div class="h-stat-lbl">Deploy saved</div></div>
+      <div><span class="h-stat-num" data-target="3" data-suffix="×">3×</span><div class="h-stat-lbl">Azure cert</div></div>
     </div>
     <div class="hero-actions">
       <a class="btn-main" href="mailto:donamelani12@gmail.com">
@@ -237,10 +282,7 @@ footer{padding:1.5rem 2.5rem;display:flex;justify-content:space-between;align-it
       <div class="proj-right">
         <div class="proj-feat">Featured</div>
         <div class="score-pill">Lighthouse 95+</div>
-        <!-- <a class="proj-arrow" href="https://tsworks.io" target="_blank" rel="noopener" aria-label="Visit tsworks.io" style="opacity:1">
-          <svg viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
-        </a> -->
-         <div class="proj-arrow"><svg viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></div>
+        <div class="proj-arrow"><svg viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg></div>
       </div>
     </div>
     <div class="proj-item">
@@ -315,95 +357,53 @@ footer{padding:1.5rem 2.5rem;display:flex;justify-content:space-between;align-it
 <section class="section" id="certifications">
   <div class="sec-header"><span class="sec-num">05</span><h2 class="sec-title">CERTIFICATIONS</h2></div>
   <div class="cert-grid">
-   
-    <div class="cert-card ">
-       <a href="https://learn.microsoft.com/en-us/users/melanisara-6864/credentials/ed59513cec580bdf" target="_blank" rel="noopener" aria-label="awards" >
-      <div class="cert-badge">Microsoft</div><div class="cert-name">Azure Fundamentals (AZ-900)</div><div class="cert-issuer">Cloud foundations</div>    </a>
+    <div class="cert-card">
+      <a href="https://learn.microsoft.com/en-us/users/melanisara-6864/credentials/ed59513cec580bdf" target="_blank" rel="noopener" aria-label="AZ-900">
+        <div class="cert-badge">Microsoft</div><div class="cert-name">Azure Fundamentals (AZ-900)</div><div class="cert-issuer">Cloud foundations</div>
+      </a>
     </div>
-
- 
-    <div class="cert-card ">
-         <a href="https://learn.microsoft.com/en-us/users/donathomson-9085/credentials/957604df1b416706" target="_blank" rel="noopener" aria-label="awards" >
-      <div class="cert-badge">Microsoft</div><div class="cert-name">Azure Administrator Associate (AZ-104)</div><div class="cert-issuer">Cloud administration</div>
-        </a>
+    <div class="cert-card">
+      <a href="https://learn.microsoft.com/en-us/users/donathomson-9085/credentials/957604df1b416706" target="_blank" rel="noopener" aria-label="AZ-104">
+        <div class="cert-badge">Microsoft</div><div class="cert-name">Azure Administrator Associate (AZ-104)</div><div class="cert-issuer">Cloud administration</div>
+      </a>
     </div>
- 
-   
-    <div class="cert-card ">
-       <a href="https://learn.microsoft.com/en-us/users/donathomson-9085/credentials/127b63c5799118c2" target="_blank" rel="noopener" aria-label="awards" >
-      <div class="cert-badge">Microsoft</div><div class="cert-name">Azure Solutions Architect Expert (AZ-305)</div><div class="cert-issuer">Cloud architecture</div>
-        </a>
+    <div class="cert-card">
+      <a href="https://learn.microsoft.com/en-us/users/donathomson-9085/credentials/127b63c5799118c2" target="_blank" rel="noopener" aria-label="AZ-305">
+        <div class="cert-badge">Microsoft</div><div class="cert-name">Azure Solutions Architect Expert (AZ-305)</div><div class="cert-issuer">Cloud architecture</div>
+      </a>
     </div>
-
     <div class="cert-card"><div class="cert-badge">freeCodeCamp</div><div class="cert-name">Responsive Web Design</div><div class="cert-issuer">Frontend fundamentals</div></div>
     <div class="cert-card"><div class="cert-badge">Online</div><div class="cert-name">Networking Fundamentals + Wireshark</div><div class="cert-issuer">Computer networking</div></div>
   </div>
 </section>
 
 <section class="section" id="awards">
-  <div class="sec-header">
-    <span class="sec-num">06</span>
-    <h2 class="sec-title">AWARDS</h2>
-  </div>
-
+  <div class="sec-header"><span class="sec-num">06</span><h2 class="sec-title">AWARDS</h2></div>
   <div class="awards-grid">
-
     <div class="award-card">
       <div class="award-bg">&#127942;</div>
-
       <div class="award-name">
-        <a
-          href="https://www.linkedin.com/posts/dona-melani-b614a2216_extramileaward-tsworks-uidevelopment-activity-7260164572152569857-Sj5H"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          EXTRA MILE AWARD
-        </a>
+        <a href="https://www.linkedin.com/posts/dona-melani-b614a2216_extramileaward-tsworks-uidevelopment-activity-7260164572152569857-Sj5H" target="_blank" rel="noopener noreferrer">EXTRA MILE AWARD</a>
       </div>
-
-      <div class="award-desc">
-        Recognized for exceeding project expectations while contributing to the development and enhancement of the Marketing Website Project. Awarded for technical excellence, reliability, and dedication to delivering high-quality solutions.
-      </div>
+      <div class="award-desc">Recognized for exceeding project expectations while contributing to the development and enhancement of the Marketing Website Project. Awarded for technical excellence, reliability, and dedication to delivering high-quality solutions.</div>
     </div>
-
     <div class="award-card">
       <div class="award-bg">&#127942;</div>
-
       <div class="award-name">
-        <a
-          href="https://www.linkedin.com/posts/dona-melani-b614a2216_recognition-tsworks-award-activity-7227225282934362112-gmLj"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          SPECIAL TEAM AWARD
-        </a>
+        <a href="https://www.linkedin.com/posts/dona-melani-b614a2216_recognition-tsworks-award-activity-7227225282934362112-gmLj" target="_blank" rel="noopener noreferrer">SPECIAL TEAM AWARD</a>
       </div>
-
-      <div class="award-desc">
-        Recognized for contributions to the successful launch of the tsworks website, including CMS development, platform enhancements, and system integrations. Awarded for teamwork, dedication, and delivering impactful results.
-      </div>
+      <div class="award-desc">Recognized for contributions to the successful launch of the tsworks website, including CMS development, platform enhancements, and system integrations. Awarded for teamwork, dedication, and delivering impactful results.</div>
     </div>
-
     <div class="award-card">
       <div class="award-bg">&#127942;</div>
-
       <div class="award-name">
-        <a
-          href="https://www.linkedin.com/posts/dona-melani-b614a2216_special-mention-award-activity-7313866436479750144-Ymb5"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          SPECIAL MENTION AWARD
-        </a>
+        <a href="https://www.linkedin.com/posts/dona-melani-b614a2216_special-mention-award-activity-7313866436479750144-Ymb5" target="_blank" rel="noopener noreferrer">SPECIAL MENTION AWARD</a>
       </div>
-
-      <div class="award-desc">
-        Recognized for significant contributions to the successful delivery of a client project, demonstrating technical excellence, dedication, and a strong commitment to project success.
-      </div>
+      <div class="award-desc">Recognized for significant contributions to the successful delivery of a client project, demonstrating technical excellence, dedication, and a strong commitment to project success.</div>
     </div>
-
   </div>
 </section>
+
 <section class="contact-section" id="contact">
   <div class="contact-big">LET'S<br><em>WORK</em><br>TOGETHER</div>
   <div class="contact-row">
@@ -433,13 +433,233 @@ footer{padding:1.5rem 2.5rem;display:flex;justify-content:space-between;align-it
   <div class="foot-logo">dona<span>.</span></div>
 </footer>
 
+<!-- cursor -->
 <script>
-const dot=document.getElementById('dot');
-document.addEventListener('mousemove',e=>{dot.style.left=e.clientX+'px';dot.style.top=e.clientY+'px'});
-document.querySelectorAll('a,button').forEach(el=>{
-  el.addEventListener('mouseenter',()=>{dot.style.transform='translate(-50%,-50%) scale(3)';dot.style.opacity='0.4'});
-  el.addEventListener('mouseleave',()=>{dot.style.transform='translate(-50%,-50%) scale(1)';dot.style.opacity='1'});
+const dot = document.getElementById('dot');
+document.addEventListener('mousemove', e => {
+  dot.style.left = e.clientX + 'px';
+  dot.style.top  = e.clientY + 'px';
+});
+document.querySelectorAll('a,button').forEach(el => {
+  el.addEventListener('mouseenter', () => { dot.style.transform = 'translate(-50%,-50%) scale(3)'; dot.style.opacity = '0.4'; });
+  el.addEventListener('mouseleave', () => { dot.style.transform = 'translate(-50%,-50%) scale(1)'; dot.style.opacity = '1'; });
 });
 </script>
+
+<!-- GSAP + ScrollTrigger -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+/* ─────────────────────────────────────────────
+   1. HERO NAME — staggered lines slide up on load
+───────────────────────────────────────────── */
+gsap.from(['.hero-name .line1', '.hero-name .line2', '.hero-name .line3'], {
+  opacity: 0,
+  y: 80,
+  duration: 1,
+  ease: 'power3.out',
+  stagger: 0.12,
+  delay: 0.2
+});
+
+gsap.from(['.hero-desc', '.hero-stats', '.hero-actions'], {
+  opacity: 0,
+  y: 30,
+  duration: 0.8,
+  ease: 'power2.out',
+  stagger: 0.1,
+  delay: 0.7
+});
+
+/* ─────────────────────────────────────────────
+   2. HERO NAME PARALLAX — drifts up slowly on scroll
+───────────────────────────────────────────── */
+gsap.to('.hero-name', {
+  yPercent: -18,
+  ease: 'none',
+  scrollTrigger: {
+    trigger: '.hero',
+    start: 'top top',
+    end: 'bottom top',
+    scrub: 1.5
+  }
+});
+
+/* ─────────────────────────────────────────────
+   3. BG GRADIENT — travels across page as you scroll
+───────────────────────────────────────────── */
+const root = document.documentElement;
+
+ScrollTrigger.create({
+  trigger: '#about',
+  start: 'top 80%',
+  onEnter:     () => root.style.setProperty('--grad-opacity', '1'),
+  onLeaveBack: () => root.style.setProperty('--grad-opacity', '0')
+});
+
+ScrollTrigger.create({
+  trigger: 'body',
+  start: 'top top',
+  end: 'bottom bottom',
+  scrub: true,
+  onUpdate: self => {
+    const p = self.progress;
+    const x = 20 + Math.sin(p * Math.PI * 2) * 30 + p * 30;
+    const y = 10 + p * 80;
+    root.style.setProperty('--grad-x', x.toFixed(1) + '%');
+    root.style.setProperty('--grad-y', y.toFixed(1) + '%');
+  }
+});
+
+/* ─────────────────────────────────────────────
+   4. SECTION HEADERS — slide in from left
+───────────────────────────────────────────── */
+gsap.utils.toArray('.sec-header').forEach(header => {
+  gsap.from(header, {
+    opacity: 0,
+    x: -40,
+    duration: 0.7,
+    ease: 'power2.out',
+    scrollTrigger: { trigger: header, start: 'top 88%', toggleActions: 'play none none none' }
+  });
+});
+
+/* ─────────────────────────────────────────────
+   5. ABOUT — text left, facts right
+───────────────────────────────────────────── */
+gsap.from('.about-text', {
+  opacity: 0,
+  x: -50,
+  duration: 0.9,
+  ease: 'power2.out',
+  scrollTrigger: { trigger: '.about-text', start: 'top 85%' }
+});
+
+gsap.utils.toArray('.about-fact').forEach((fact, i) => {
+  gsap.from(fact, {
+    opacity: 0,
+    x: 40,
+    duration: 0.6,
+    delay: i * 0.1,
+    ease: 'power2.out',
+    scrollTrigger: { trigger: fact, start: 'top 90%' }
+  });
+});
+
+/* ─────────────────────────────────────────────
+   6. TECH STACK — boxes + tags stagger pop-in
+───────────────────────────────────────────── */
+gsap.utils.toArray('.skill-box').forEach((box, i) => {
+  gsap.from(box, {
+    opacity: 0,
+    y: 30,
+    duration: 0.5,
+    delay: i * 0.08,
+    ease: 'power2.out',
+    scrollTrigger: { trigger: box, start: 'top 90%' }
+  });
+  gsap.from(box.querySelectorAll('.tag'), {
+    opacity: 0,
+    scale: 0.8,
+    duration: 0.35,
+    stagger: 0.04,
+    ease: 'back.out(1.5)',
+    scrollTrigger: { trigger: box, start: 'top 85%' }
+  });
+});
+
+/* ─────────────────────────────────────────────
+   7. PROJECTS — each row fades up
+───────────────────────────────────────────── */
+gsap.utils.toArray('.proj-item').forEach(item => {
+  gsap.from(item, {
+    opacity: 0,
+    y: 50,
+    duration: 0.7,
+    ease: 'power2.out',
+    scrollTrigger: { trigger: item, start: 'top 88%', toggleActions: 'play none none none' }
+  });
+});
+
+/* ─────────────────────────────────────────────
+   8. EXPERIENCE — left slides left, bullets stagger right
+───────────────────────────────────────────── */
+gsap.utils.toArray('.exp-item').forEach(item => {
+  const left  = item.children[0];
+  const right = item.querySelector('.exp-pts');
+  if (left) gsap.from(left, {
+    opacity: 0, x: -30, duration: 0.6, ease: 'power2.out',
+    scrollTrigger: { trigger: item, start: 'top 88%' }
+  });
+  if (right) gsap.from(right.querySelectorAll('li'), {
+    opacity: 0, x: 20, duration: 0.5, stagger: 0.07, ease: 'power2.out',
+    scrollTrigger: { trigger: item, start: 'top 85%' }
+  });
+});
+
+/* ─────────────────────────────────────────────
+   9. CERT CARDS — scale up with stagger
+───────────────────────────────────────────── */
+gsap.from('.cert-card', {
+  opacity: 0,
+  y: 30,
+  scale: 0.96,
+  duration: 0.5,
+  stagger: 0.08,
+  ease: 'power2.out',
+  scrollTrigger: { trigger: '.cert-grid', start: 'top 85%' }
+});
+
+/* ─────────────────────────────────────────────
+   10. AWARD CARDS — slide up staggered
+───────────────────────────────────────────── */
+gsap.from('.award-card', {
+  opacity: 0,
+  y: 40,
+  duration: 0.6,
+  stagger: 0.12,
+  ease: 'power2.out',
+  scrollTrigger: { trigger: '.awards-grid', start: 'top 85%' }
+});
+
+/* ─────────────────────────────────────────────
+   11. CONTACT — big text rises in
+───────────────────────────────────────────── */
+gsap.from('.contact-big', {
+  opacity: 0,
+  y: 60,
+  duration: 0.9,
+  ease: 'power3.out',
+  scrollTrigger: { trigger: '.contact-section', start: 'top 80%' }
+});
+
+gsap.from('.contact-row', {
+  opacity: 0,
+  y: 30,
+  duration: 0.7,
+  ease: 'power2.out',
+  scrollTrigger: { trigger: '.contact-row', start: 'top 90%' }
+});
+
+/* ─────────────────────────────────────────────
+   12. STAT COUNTERS — count up on page load
+───────────────────────────────────────────── */
+document.querySelectorAll('.h-stat-num[data-target]').forEach(el => {
+  const target = parseFloat(el.dataset.target);
+  const suffix = el.dataset.suffix || '';
+  const obj = { val: 0 };
+  gsap.to(obj, {
+    val: target,
+    duration: 1.8,
+    delay: 1,
+    ease: 'power1.out',
+    onUpdate() { el.textContent = Math.round(obj.val) + suffix; }
+  });
+});
+</script>
+
 </body>
 </html>
